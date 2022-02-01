@@ -13,6 +13,7 @@ progs_list="${@}"
 [ -z "${progs_list}" ] && exit 0
 
 # Comando a ser executado ao encerra p "programa especidicado"
+# Command to be executed when terminating the "specified program"
 prog_enc() {
 	killall -9 gamemoded 2>/dev/null && {
 		echo "Encerrado!"
@@ -20,6 +21,7 @@ prog_enc() {
 }
 
 # Verifica se o programa esta sendo executado
+# Check if the program is running
 while :; do
 	sleep 2
 	pidof "${progs_list}" &>/dev/null
