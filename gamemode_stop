@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+#------------------------------------------------------------------
+# Autor: NidoBr
+# Mais: < https://github.com/NIDObr >
+# Email: coqecoisa@gmail.com
+# Versão: 0.1-beta 31/01/2022
+# Sobre: Encerra o "gamemode"
+# License: BSD-3-Clause License
+#------------------------------------------------------------------
+
+progs_list="${@}"
+[ -z "${progs_list}" ] && exit 0
+
+# Comando a ser executado ao encerra p "programa especidicado"
+prog_enc() {
+	killall -9 gamemoded 2>/dev/null && {
+		echo "Encerrado!"
+	}
+}
+
+# Verifica se o programa esta sendo executado
+while :; do
+	sleep 2
+	pidof "${progs_list}" &>/dev/null
+	exit_c=${?}
+	[ "${exit_c}" == '1' ] && break
+done
+
+prog_enc
