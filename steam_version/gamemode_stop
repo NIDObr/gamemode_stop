@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+#------------------------------------------------------------------
+# Autor: NidoBr
+# Mais: < https://github.com/NIDObr >
+# Email: coqecoisa@gmail.com
+# Versão: 0.1-beta-steam 10/02/2022
+# Sobre: Encerra o "gamemode", compativel com a steam.
+#	Closes the "gamemode", compatible with steam.
+# License: BSD-3-Clause License
+#------------------------------------------------------------------
+
+progs_list="${1}"
+[ -z "${progs_list}" ] && exit 0
+[ ! -z "${2}" ] && shift
+
+# Comando a ser executado ao encerra o "programa especificado"
+# Command to be executed when terminating the "specified program"
+prog_enc() {
+	killall -9 gamemoded 2>/dev/null && {
+		printf '%s\n' "`date "+%d%m%y_%H%M_"` Encerrado!" >> ${HOME}/.gamemode_stop.log
+	} || {
+		printf '%s\n' "`date "+%d%m%y_%H%M "`Erro!" >> ${HOME}/.gamemode_stop.log
+	}
+}
+
+# Verifica se o programa esta sendo executado
+# Check if the program is running
+prog_detector(){
+	printf '%s\n' "`date "+%d%m%y_%H%M_"` Serviço iniciando!" >> ${HOME}/.gamemode_stop.log
+	# Time needed for the game to start, adjust to your scenario if necessary
+	sleep 15
+	printf '%s\n' "`date "+%d%m%y_%H%M_"` Serviço iniciado!" >> ${HOME}/.gamemode_stop.log
+	while :; do
+		sleep 5
+		pidof "${progs_list}" &>/dev/null
+		exit_c=${?}
+		[ "${exit_c}" == '1' ] && break
+	done
+	prog_enc
+}
+
+prog_detector &
+# Execute the rest of the passed commands/arguments. Ex: use with Steam.
+# Executa o restante dos comandos/argumentos passados. Ex: uso com a Steam.
+env "${@}"
+
+
