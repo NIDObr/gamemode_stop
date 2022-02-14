@@ -12,6 +12,7 @@
 
 progs_list="${1}"
 [ -z "${progs_list}" ] && exit 0
+[ ! -z "${2}" ] && shift
 
 # Comando a ser executado ao encerra o "programa especificado"
 # Command to be executed when terminating the "specified program"
